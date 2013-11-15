@@ -30,8 +30,8 @@ module Guard
     private
     def uglify
       begin
-        uglified = Uglifier.new.compile(File.read(@input))
-        File.open(@output,'w'){ |f| f.write(uglified) }
+        uglified,source_map = Uglifier.new.compile_with_map(File.read(@input))
+        File.open(@output,'w'){ |f| f.write(uglified);f.write(source_map) }
         UI.info         "Uglified #{@input} to #{@output}"
         Notifier.notify "Uglified #{@input} to #{@output}", :title => 'Uglify'
         true
